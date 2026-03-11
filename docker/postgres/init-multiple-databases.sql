@@ -1,0 +1,12 @@
+CREATE DATABASE api_gateway_db;
+CREATE DATABASE book_service_db;
+CREATE DATABASE cart_service_db;
+CREATE DATABASE customer_service_db;
+CREATE DATABASE staff_service_db;
+CREATE DATABASE manager_service_db;
+CREATE DATABASE catalog_service_db;
+CREATE DATABASE order_service_db;
+CREATE DATABASE pay_service_db;
+CREATE DATABASE ship_service_db;
+CREATE DATABASE comment_rate_service_db;
+CREATE DATABASE recommender_ai_service_db;

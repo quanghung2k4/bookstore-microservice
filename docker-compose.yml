@@ -1,0 +1,368 @@
+services:
+  postgres:
+    image: postgres:16-alpine
+    container_name: bookstore-postgres
+    environment:
+      POSTGRES_USER: bookstore
+      POSTGRES_PASSWORD: bookstore
+      POSTGRES_DB: postgres
+    volumes:
+      - postgres-data:/var/lib/postgresql/data
+      - ./docker/postgres/init-multiple-databases.sql:/docker-entrypoint-initdb.d/init-multiple-databases.sql:ro
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U bookstore -d postgres"]
+      interval: 5s
+      timeout: 5s
+      retries: 20
+    ports:
+      - "5432:5432"
+    networks:
+      - bookstore-network
+    restart: unless-stopped
+
+  api-gateway:
+    build: ./api_gateway
+    container_name: api-gateway
+    command: sh -c "python manage.py migrate && gunicorn --bind 0.0.0.0:8000 api_gateway.wsgi:application"
+    ports:
+      - "8000:8000"
+    depends_on:
+      postgres:
+        condition: service_healthy
+      book-service:
+        condition: service_started
+      cart-service:
+        condition: service_started
+      customer-service:
+        condition: service_started
+      order-service:
+        condition: service_started
+      comment-rate-service:
+        condition: service_started
+      recommender-ai-service:
+        condition: service_started
+    environment:
+      DEBUG: "True"
+      ALLOWED_HOSTS: "*"
+      DB_ENGINE: django.db.backends.postgresql
+      DB_HOST: postgres
+      DB_PORT: "5432"
+      DB_NAME: api_gateway_db
+      DB_USER: bookstore
+      DB_PASSWORD: bookstore
+      BOOK_SERVICE_URL: http://book-service:8000
+      CART_SERVICE_URL: http://cart-service:8000
+      CUSTOMER_SERVICE_URL: http://customer-service:8000
+      STAFF_SERVICE_URL: http://staff-service:8000
+      MANAGER_SERVICE_URL: http://manager-service:8000
+      CATALOG_SERVICE_URL: http://catalog-service:8000
+      ORDER_SERVICE_URL: http://order-service:8000
+      PAY_SERVICE_URL: http://pay-service:8000
+      SHIP_SERVICE_URL: http://ship-service:8000
+      COMMENT_RATE_SERVICE_URL: http://comment-rate-service:8000
+      RECOMMENDER_AI_SERVICE_URL: http://recommender-ai-service:8000
+    networks:
+      - bookstore-network
+    restart: unless-stopped
+
+  frontend:
+    build: ./frontend
+    container_name: bookstore-frontend
+    depends_on:
+      api-gateway:
+        condition: service_started
+    environment:
+      VITE_API_PROXY_TARGET: http://api-gateway:8000
+    ports:
+      - "5173:5173"
+    networks:
+      - bookstore-network
+    restart: unless-stopped
+
+  book-service:
+    build: ./book_service
+    container_name: book-service
+    command: sh -c "python manage.py migrate && gunicorn --bind 0.0.0.0:8000 book_service.wsgi:application"
+    ports:
+      - "8002:8000"
+    depends_on:
+      postgres:
+        condition: service_healthy
+    environment:
+      DEBUG: "True"
+      ALLOWED_HOSTS: "*"
+      DB_ENGINE: django.db.backends.postgresql
+      DB_HOST: postgres
+      DB_PORT: "5432"
+      DB_NAME: book_service_db
+      DB_USER: bookstore
+      DB_PASSWORD: bookstore
+    networks:
+      - bookstore-network
+    restart: unless-stopped
+
+  cart-service:
+    build: ./cart_service
+    container_name: cart-service
+    command: sh -c "python manage.py migrate && gunicorn --bind 0.0.0.0:8000 cart_service.wsgi:application"
+    ports:
+      - "8003:8000"
+    depends_on:
+      postgres:
+        condition: service_healthy
+      book-service:
+        condition: service_started
+    environment:
+      DEBUG: "True"
+      ALLOWED_HOSTS: "*"
+      DB_ENGINE: django.db.backends.postgresql
+      DB_HOST: postgres
+      DB_PORT: "5432"
+      DB_NAME: cart_service_db
+      DB_USER: bookstore
+      DB_PASSWORD: bookstore
+      BOOK_SERVICE_URL: http://book-service:8000
+    networks:
+      - bookstore-network
+    restart: unless-stopped
+
+  customer-service:
+    build: ./customer_service
+    container_name: customer-service
+    command: sh -c "python manage.py migrate && gunicorn --bind 0.0.0.0:8000 customer_service.wsgi:application"
+    ports:
+      - "8004:8000"
+    depends_on:
+      postgres:
+        condition: service_healthy
+      cart-service:
+        condition: service_started
+    environment:
+      DEBUG: "True"
+      ALLOWED_HOSTS: "*"
+      DB_ENGINE: django.db.backends.postgresql
+      DB_HOST: postgres
+      DB_PORT: "5432"
+      DB_NAME: customer_service_db
+      DB_USER: bookstore
+      DB_PASSWORD: bookstore
+      CART_SERVICE_URL: http://cart-service:8000
+    networks:
+      - bookstore-network
+    restart: unless-stopped
+
+  staff-service:
+    build: ./staff_service
+    container_name: staff-service
+    command: sh -c "python manage.py migrate && gunicorn --bind 0.0.0.0:8000 staff_service.wsgi:application"
+    ports:
+      - "8005:8000"
+    depends_on:
+      postgres:
+        condition: service_healthy
+      book-service:
+        condition: service_started
+    environment:
+      DEBUG: "True"
+      ALLOWED_HOSTS: "*"
+      DB_ENGINE: django.db.backends.postgresql
+      DB_HOST: postgres
+      DB_PORT: "5432"
+      DB_NAME: staff_service_db
+      DB_USER: bookstore
+      DB_PASSWORD: bookstore
+      BOOK_SERVICE_URL: http://book-service:8000
+    networks:
+      - bookstore-network
+    restart: unless-stopped
+
+  manager-service:
+    build: ./manager_service
+    container_name: manager-service
+    command: sh -c "python manage.py migrate && gunicorn --bind 0.0.0.0:8000 manager_service.wsgi:application"
+    ports:
+      - "8006:8000"
+    depends_on:
+      postgres:
+        condition: service_healthy
+      book-service:
+        condition: service_started
+      order-service:
+        condition: service_started
+      comment-rate-service:
+        condition: service_started
+    environment:
+      DEBUG: "True"
+      ALLOWED_HOSTS: "*"
+      DB_ENGINE: django.db.backends.postgresql
+      DB_HOST: postgres
+      DB_PORT: "5432"
+      DB_NAME: manager_service_db
+      DB_USER: bookstore
+      DB_PASSWORD: bookstore
+      BOOK_SERVICE_URL: http://book-service:8000
+      ORDER_SERVICE_URL: http://order-service:8000
+      COMMENT_RATE_SERVICE_URL: http://comment-rate-service:8000
+    networks:
+      - bookstore-network
+    restart: unless-stopped
+
+  catalog-service:
+    build: ./catalog_service
+    container_name: catalog-service
+    command: sh -c "python manage.py migrate && gunicorn --bind 0.0.0.0:8000 catalog_service.wsgi:application"
+    ports:
+      - "8007:8000"
+    depends_on:
+      postgres:
+        condition: service_healthy
+      book-service:
+        condition: service_started
+    environment:
+      DEBUG: "True"
+      ALLOWED_HOSTS: "*"
+      DB_ENGINE: django.db.backends.postgresql
+      DB_HOST: postgres
+      DB_PORT: "5432"
+      DB_NAME: catalog_service_db
+      DB_USER: bookstore
+      DB_PASSWORD: bookstore
+      BOOK_SERVICE_URL: http://book-service:8000
+    networks:
+      - bookstore-network
+    restart: unless-stopped
+
+  order-service:
+    build: ./order_service
+    container_name: order-service
+    command: sh -c "python manage.py migrate && gunicorn --bind 0.0.0.0:8000 order_service.wsgi:application"
+    ports:
+      - "8008:8000"
+    depends_on:
+      postgres:
+        condition: service_healthy
+      cart-service:
+        condition: service_started
+      book-service:
+        condition: service_started
+      pay-service:
+        condition: service_started
+      ship-service:
+        condition: service_started
+    environment:
+      DEBUG: "True"
+      ALLOWED_HOSTS: "*"
+      DB_ENGINE: django.db.backends.postgresql
+      DB_HOST: postgres
+      DB_PORT: "5432"
+      DB_NAME: order_service_db
+      DB_USER: bookstore
+      DB_PASSWORD: bookstore
+      CART_SERVICE_URL: http://cart-service:8000
+      BOOK_SERVICE_URL: http://book-service:8000
+      PAY_SERVICE_URL: http://pay-service:8000
+      SHIP_SERVICE_URL: http://ship-service:8000
+    networks:
+      - bookstore-network
+    restart: unless-stopped
+
+  pay-service:
+    build: ./pay_service
+    container_name: pay-service
+    command: sh -c "python manage.py migrate && gunicorn --bind 0.0.0.0:8000 pay_service.wsgi:application"
+    ports:
+      - "8009:8000"
+    depends_on:
+      postgres:
+        condition: service_healthy
+    environment:
+      DEBUG: "True"
+      ALLOWED_HOSTS: "*"
+      DB_ENGINE: django.db.backends.postgresql
+      DB_HOST: postgres
+      DB_PORT: "5432"
+      DB_NAME: pay_service_db
+      DB_USER: bookstore
+      DB_PASSWORD: bookstore
+    networks:
+      - bookstore-network
+    restart: unless-stopped
+
+  ship-service:
+    build: ./ship_service
+    container_name: ship-service
+    command: sh -c "python manage.py migrate && gunicorn --bind 0.0.0.0:8000 ship_service.wsgi:application"
+    ports:
+      - "8010:8000"
+    depends_on:
+      postgres:
+        condition: service_healthy
+    environment:
+      DEBUG: "True"
+      ALLOWED_HOSTS: "*"
+      DB_ENGINE: django.db.backends.postgresql
+      DB_HOST: postgres
+      DB_PORT: "5432"
+      DB_NAME: ship_service_db
+      DB_USER: bookstore
+      DB_PASSWORD: bookstore
+    networks:
+      - bookstore-network
+    restart: unless-stopped
+
+  comment-rate-service:
+    build: ./comment_rate_service
+    container_name: comment-rate-service
+    command: sh -c "python manage.py migrate && gunicorn --bind 0.0.0.0:8000 comment_rate_service.wsgi:application"
+    ports:
+      - "8011:8000"
+    depends_on:
+      postgres:
+        condition: service_healthy
+    environment:
+      DEBUG: "True"
+      ALLOWED_HOSTS: "*"
+      DB_ENGINE: django.db.backends.postgresql
+      DB_HOST: postgres
+      DB_PORT: "5432"
+      DB_NAME: comment_rate_service_db
+      DB_USER: bookstore
+      DB_PASSWORD: bookstore
+    networks:
+      - bookstore-network
+    restart: unless-stopped
+
+  recommender-ai-service:
+    build: ./recommender_ai_service
+    container_name: recommender-ai-service
+    command: sh -c "python manage.py migrate && gunicorn --bind 0.0.0.0:8000 recommender_ai_service.wsgi:application"
+    ports:
+      - "8012:8000"
+    depends_on:
+      postgres:
+        condition: service_healthy
+      book-service:
+        condition: service_started
+      comment-rate-service:
+        condition: service_started
+    environment:
+      DEBUG: "True"
+      ALLOWED_HOSTS: "*"
+      DB_ENGINE: django.db.backends.postgresql
+      DB_HOST: postgres
+      DB_PORT: "5432"
+      DB_NAME: recommender_ai_service_db
+      DB_USER: bookstore
+      DB_PASSWORD: bookstore
+      BOOK_SERVICE_URL: http://book-service:8000
+      COMMENT_RATE_SERVICE_URL: http://comment-rate-service:8000
+    networks:
+      - bookstore-network
+    restart: unless-stopped
+
+volumes:
+  postgres-data:
+
+networks:
+  bookstore-network:
+    driver: bridge

@@ -1,0 +1,119 @@
+.app-shell {
+  position: relative;
+  min-height: 100vh;
+  padding: 30px;
+  overflow: hidden;
+}
+
+.ambient {
+  position: absolute;
+  z-index: 0;
+  filter: blur(14px);
+  pointer-events: none;
+}
+
+.ambient-left {
+  inset: 100px auto auto -80px;
+  width: 280px;
+  height: 280px;
+  border-radius: 47% 53% 58% 42%;
+  background: rgba(191, 91, 44, 0.12);
+}
+
+.ambient-right {
+  inset: auto -90px 140px auto;
+  width: 320px;
+  height: 320px;
+  border-radius: 55% 45% 41% 59%;
+  background: rgba(31, 114, 102, 0.1);
+}
+
+.shell-content,
+.review-shell {
+  position: relative;
+  z-index: 1;
+  max-width: 1420px;
+  margin: 0 auto;
+}
+
+.shell-content,
+.view-shell,
+.view-stack,
+.single-column-layout,
+.auth-layout {
+  display: grid;
+  gap: 24px;
+}
+
+.single-column-layout {
+  max-width: 1040px;
+}
+
+.auth-layout {
+  max-width: 680px;
+}
+
+.section-panel {
+  background: var(--surface);
+  border: 1px solid rgba(255, 255, 255, 0.5);
+  border-radius: var(--radius-xl);
+  box-shadow: var(--shadow);
+  backdrop-filter: blur(18px);
+  padding: 24px;
+}
+
+.spotlight-copy h2,
+.spotlight-card h3,
+.section-header h3,
+.book-card-title,
+.auth-copy h2,
+.welcome-strip h2,
+.modal-title {
+  font-family: 'Fraunces', serif;
+}
+
+.auth-copy h2,
+.welcome-strip h2,
+.modal-title {
+  margin: 0;
+  font-size: clamp(1.9rem, 3vw, 2.5rem);
+  line-height: 1.05;
+}
+
+.welcome-strip {
+  display: flex;
+  align-items: end;
+  justify-content: space-between;
+  gap: 18px;
+}
+
+.global-message-stack {
+  min-height: 0;
+}
+
+.message-stack {
+  display: grid;
+  gap: 10px;
+}
+
+.state-line {
+  margin: 0;
+  padding: 12px 14px;
+  border-radius: 16px;
+  background: rgba(255, 255, 255, 0.75);
+  color: var(--muted);
+}
+
+.state-line.error {
+  color: var(--primary-deep);
+  background: rgba(191, 91, 44, 0.08);
+}
+
+.state-line.success {
+  color: var(--teal);
+  background: rgba(31, 114, 102, 0.1);
+}
+
+.logout-button {
+  align-self: flex-start;
+}

@@ -1,0 +1,74 @@
+@media (max-width: 1180px) {
+  .catalog-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .review-layout {
+    grid-template-columns: 1fr;
+  }
+
+  .book-card {
+    grid-template-columns: 92px minmax(0, 1fr);
+  }
+
+  .detail-hero-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 760px) {
+  .app-shell {
+    padding: 18px;
+  }
+
+  .catalog-grid,
+  .detail-summary-grid,
+  .modal-summary-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .checkout-grid,
+  .book-card-meta-grid,
+  .detail-summary-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .section-header,
+  .toolbar-row,
+  .book-card-foot,
+  .cart-item,
+  .mini-card-head,
+  .mini-card-meta,
+  .book-card-head,
+  .modal-header,
+  .welcome-strip,
+  .book-card-actions,
+  .detail-page-header,
+  .search-form {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .book-card {
+    grid-template-columns: 1fr;
+  }
+
+  .book-card-cover {
+    min-height: 110px;
+  }
+
+  .search-input,
+  .auth-submit,
+  .book-card-action {
+    max-width: none;
+    width: 100%;
+  }
+
+  .cart-item-side {
+    align-items: stretch;
+  }
+
+  .section-badge {
+    white-space: normal;
+  }
+}

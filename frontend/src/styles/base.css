@@ -1,0 +1,68 @@
+@import url('https://fonts.googleapis.com/css2?family=Be+Vietnam+Pro:wght@400;500;600;700&family=Fraunces:opsz,wght@9..144,600;9..144,700&display=swap');
+
+:root {
+  --bg: #f3efe7;
+  --surface: rgba(255, 252, 247, 0.88);
+  --surface-soft: rgba(248, 242, 234, 0.9);
+  --surface-muted: rgba(255, 255, 255, 0.74);
+  --ink: #1f1d1a;
+  --muted: #6a6257;
+  --line: rgba(50, 43, 36, 0.1);
+  --primary: #bf5b2c;
+  --primary-deep: #7f3514;
+  --teal: #1f7266;
+  --teal-soft: rgba(31, 114, 102, 0.14);
+  --warning: #ac5b21;
+  --warning-soft: rgba(172, 91, 33, 0.14);
+  --success-soft: rgba(31, 114, 102, 0.14);
+  --shadow: 0 30px 80px rgba(59, 41, 23, 0.12);
+  --radius-xl: 30px;
+  --radius-lg: 22px;
+  --radius-md: 16px;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body,
+#root {
+  min-height: 100%;
+}
+
+body {
+  margin: 0;
+  font-family: 'Be Vietnam Pro', sans-serif;
+  color: var(--ink);
+  background:
+    radial-gradient(circle at top left, rgba(191, 91, 44, 0.18), transparent 28%),
+    radial-gradient(circle at top right, rgba(31, 114, 102, 0.16), transparent 24%),
+    linear-gradient(180deg, #f6f1e8 0%, #f1ece3 46%, #ece5da 100%);
+}
+
+button,
+input,
+select,
+textarea {
+  font: inherit;
+}
+
+button {
+  cursor: pointer;
+}
+
+input,
+select,
+textarea {
+  width: 100%;
+  border: 1px solid var(--line);
+  background: rgba(255, 255, 255, 0.92);
+  border-radius: 16px;
+  padding: 13px 15px;
+  color: var(--ink);
+}
+
+textarea {
+  resize: vertical;
+}
