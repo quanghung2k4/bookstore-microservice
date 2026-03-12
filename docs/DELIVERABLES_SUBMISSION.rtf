@@ -1,0 +1,150 @@
+{\rtf1\ansi\deff0
+{\fonttbl{\f0 Calibri;}}
+\viewkind4\uc1\pard\sa160\sl240\slmult1\f0\fs24
+\b Bookstore Microservice Deliverables\b0\par
+\par
+Project title: Bookstore Microservice System\par
+Course: [Add course name]\par
+Team members: [Add team members]\par
+Student IDs: [Add student IDs]\par
+Submission date: [Add submission date]\par
+\par
+\b 1. GitHub Repository\b0\par
+The complete source code for the Bookstore Microservice project is maintained in a GitHub repository. The repository contains the backend microservices, API gateway, frontend application, Docker setup, and the full supporting documentation required for submission.\par
+\par
+Repository link: [Add GitHub repository URL here]\par
+\par
+Repository contents include:\par
+- Django microservices for books, customers, carts, orders, payment, shipping, reviews, recommendations, staff, manager, and catalog\par
+- React frontend implemented with Vite\par
+- API gateway for frontend-facing requests\par
+- Dockerfiles and Docker Compose configuration\par
+- Project documentation under the docs folder\par
+\par
+\b 2. Architecture Diagram for Each Service\b0\par
+This deliverable is provided in the repository through the architecture documentation files. The system is designed as a microservice-based bookstore platform in which each service owns a specific business responsibility and communicates through HTTP APIs.\par
+\par
+The main architecture files are:\par
+- docs/ARCHITECTURE.md: overall system architecture\par
+- docs/SERVICE_ARCHITECTURE_DIAGRAMS.md: service-level architecture diagrams\par
+\par
+The architecture shows the following design decisions:\par
+- The frontend communicates with the API gateway rather than directly calling every backend service\par
+- The API gateway forwards requests to the appropriate downstream services\par
+- Each service focuses on one main bounded context, such as books, customers, carts, orders, payment, shipping, or reviews\par
+- Internal service dependencies are explicit and REST-based\par
+- Database ownership is separated by service\par
+\par
+The key service responsibilities are summarized below:\par
+- api_gateway: single public entry point for frontend API traffic\par
+- book_service: manages book data and CRUD operations\par
+- customer_service: registration and login management\par
+- cart_service: shopping cart and cart item management\par
+- order_service: checkout flow and order creation\par
+- pay_service: payment record handling\par
+- ship_service: shipment record handling\par
+- comment_rate_service: ratings and reviews\par
+- recommender_ai_service: recommendation logic\par
+- staff_service: staff operations on books\par
+- manager_service: reporting and management data\par
+- catalog_service: category and browsing support\par
+\par
+\b 3. API Documentation\b0\par
+The API documentation is included in the repository as docs/API_DOCUMENTATION.md. The frontend accesses backend functionality through the API gateway, which exposes a unified set of routes.\par
+\par
+Base URL:\par
+http://localhost:8000\par
+\par
+Important API groups include:\par
+- Book APIs for listing, retrieving, creating, updating, and deleting books\par
+- Customer APIs for registration and login\par
+- Cart APIs for cart creation, item management, and customer cart retrieval\par
+- Order APIs for checkout and order history\par
+- Review APIs for ratings and comments\par
+- Recommendation APIs for customer-specific suggestions\par
+\par
+Example endpoints:\par
+- GET /api/book/books/\par
+- POST /api/customer/customers/register/\par
+- POST /api/customer/customers/login/\par
+- GET /api/cart/carts/customer/{customer_id}/\par
+- POST /api/order/orders/\par
+- GET /api/review/reviews/book/{book_id}/\par
+- GET /api/recommend/customers/{customer_id}/recommendations/\par
+\par
+The API documentation also describes example payloads and response behavior for the main user flows.\par
+\par
+\b 4. 10-Minute Demo Video\b0\par
+The repository does not contain the final recorded video file, but it includes a complete demo script and recording guide in docs/DEMO_VIDEO_SCRIPT.md. This script can be used directly to record the required 10-minute presentation.\par
+\par
+Suggested demo structure:\par
+0:00-1:00 Introduction to the project and repository\par
+1:00-2:00 Architecture overview using the documentation\par
+2:00-3:30 Customer registration and login\par
+3:30-5:00 Book browsing and cart operations\par
+5:00-6:30 Checkout and order creation\par
+6:30-7:30 Review and recommendation workflow\par
+7:30-8:30 Staff functionality\par
+8:30-9:15 Manager functionality\par
+9:15-10:00 Closing summary\par
+\par
+Recommended evidence to show in the video:\par
+- Repository structure\par
+- Frontend user interface\par
+- API gateway behavior\par
+- Customer registration creating a cart automatically\par
+- Cart to order flow triggering payment and shipping\par
+- Review submission and recommendation refresh\par
+- Staff and manager service behavior\par
+\par
+Final video link: [Add demo video link here]\par
+\par
+\b 5. 8-12 Page Technical Report\b0\par
+The main technical report draft is already available in docs/TECHNICAL_REPORT.md, and the original writing outline is available in docs/TECHNICAL_REPORT_TEMPLATE.md. Together, these files support the required 8-12 page report deliverable.\par
+\par
+The report covers:\par
+- Introduction and project objectives\par
+- Problem statement and motivation for microservices\par
+- System architecture and service boundaries\par
+- Detailed service design\par
+- API design and REST communication\par
+- Database separation strategy\par
+- Functional demonstration scenarios\par
+- Docker deployment\par
+- Validation and testing\par
+- Challenges and lessons learned\par
+\par
+Suggested report structure for final submission:\par
+1. Introduction\par
+2. Problem Statement\par
+3. System Architecture\par
+4. Service Design\par
+5. API Design\par
+6. Database Design\par
+7. Functional Demonstration\par
+8. Docker Deployment\par
+9. Testing and Validation\par
+10. Challenges and Lessons Learned\par
+11. Conclusion\par
+\par
+If required by the instructor, the Markdown report can be copied into Microsoft Word and formatted with screenshots, captions, and a title page to reach the final page requirement.\par
+\par
+\b Submission Summary\b0\par
+The Bookstore Microservice project already includes most of the required submission materials inside the repository. The remaining items to finalize before submission are:\par
+- Add the final GitHub repository URL\par
+- Record and upload the demo video\par
+- Export or format the technical report into the final Word or PDF submission format\par
+\par
+\b Referenced Files\b0\par
+- README.md\par
+- DOCKER_SETUP.md\par
+- docs/ARCHITECTURE.md\par
+- docs/SERVICE_ARCHITECTURE_DIAGRAMS.md\par
+- docs/API_DOCUMENTATION.md\par
+- docs/DEMO_VIDEO_SCRIPT.md\par
+- docs/TECHNICAL_REPORT.md\par
+- docs/TECHNICAL_REPORT_TEMPLATE.md\par
+- docs/DELIVERABLES_STATUS.md\par
+\par
+End of document.\par
+}

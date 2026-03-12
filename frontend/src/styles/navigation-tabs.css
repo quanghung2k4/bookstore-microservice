@@ -1,0 +1,35 @@
+.nav-tabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  padding: 16px;
+}
+
+.nav-tab {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  padding: 14px 18px;
+  border: none;
+  border-radius: var(--radius-lg);
+  background: var(--surface-soft);
+  color: var(--muted);
+}
+
+.nav-tab strong {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 28px;
+  height: 28px;
+  padding: 0 8px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.8);
+  color: var(--primary-deep);
+  font-size: 0.86rem;
+}
+
+.nav-tab.active {
+  background: linear-gradient(135deg, rgba(191, 91, 44, 0.16), rgba(255, 241, 232, 0.92));
+  color: var(--ink);
+}

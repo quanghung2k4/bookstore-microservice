@@ -28,8 +28,7 @@
   background: rgba(31, 114, 102, 0.1);
 }
 
-.shell-content,
-.review-shell {
+.shell-content {
   position: relative;
   z-index: 1;
   max-width: 1420px;
@@ -64,27 +63,14 @@
 
 .spotlight-copy h2,
 .spotlight-card h3,
-.section-header h3,
-.book-card-title,
-.auth-copy h2,
-.welcome-strip h2,
 .modal-title {
   font-family: 'Fraunces', serif;
 }
 
-.auth-copy h2,
-.welcome-strip h2,
 .modal-title {
   margin: 0;
   font-size: clamp(1.9rem, 3vw, 2.5rem);
   line-height: 1.05;
-}
-
-.welcome-strip {
-  display: flex;
-  align-items: end;
-  justify-content: space-between;
-  gap: 18px;
 }
 
 .global-message-stack {
@@ -112,8 +98,4 @@
 .state-line.success {
   color: var(--teal);
   background: rgba(31, 114, 102, 0.1);
-}
-
-.logout-button {
-  align-self: flex-start;
 }

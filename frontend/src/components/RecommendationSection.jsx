@@ -4,6 +4,7 @@ import SectionHeader from './SectionHeader.jsx';
 export default function RecommendationSection({
   customerName,
   recommendations,
+  recommendationMeta,
   loadingRecommendations,
   busyAction,
   onAddToCart,
@@ -12,15 +13,27 @@ export default function RecommendationSection({
   formatPrice,
 }) {
   return (
-    <section className="section-panel">
+    <section className="section-panel recommendation-section">
       <SectionHeader
-        eyebrow="Gợi ý thông minh"
-        title={`AI đang gợi ý cho ${customerName || 'bạn'}`}
-        description="Danh sách này lấy từ recommender service, ưu tiên sách còn hàng và có đánh giá tốt."
+        eyebrow="Gợi ý"
+        title={
+          recommendationMeta?.isFallback
+            ? `Sách nổi bật cho ${customerName || 'bạn'}`
+            : `Gợi ý cá nhân hóa cho ${customerName || 'bạn'}`
+        }
+        description={
+          recommendationMeta?.isFallback
+            ? 'Chưa có đủ dữ liệu cá nhân hóa nên hệ thống tạm xếp theo điểm đánh giá trung bình giảm dần.'
+            : 'Danh sách này ưu tiên các đầu sách gần với lịch sử mua và đánh giá của bạn.'
+        }
         badge={`${recommendations.length} gợi ý`}
       />
 
       {loadingRecommendations ? <p className="state-line">Đang tải danh sách gợi ý...</p> : null}
+
+      {!loadingRecommendations && recommendationMeta?.isFallback ? (
+        <p className="state-line">Đang dùng fallback theo đánh giá giảm dần vì tài khoản này chưa có đủ lịch sử mua hoặc đánh giá.</p>
+      ) : null}
 
       <div className="recommendation-grid">
         {recommendations.map((book) => (
@@ -48,7 +61,7 @@ export default function RecommendationSection({
 
         {!loadingRecommendations && recommendations.length === 0 ? (
           <div className="empty-state compact-empty">
-            <p>Chưa có đủ dữ liệu để cá nhân hóa. Hãy tạo thêm đánh giá hoặc đơn hàng để hệ thống gợi ý tốt hơn.</p>
+            <p>Chưa có dữ liệu gợi ý khả dụng. Hãy tạo thêm đánh giá hoặc đơn hàng để hệ thống cá nhân hóa tốt hơn.</p>
           </div>
         ) : null}
       </div>

@@ -1,0 +1,27 @@
+.auth-section {
+  display: grid;
+  gap: 20px;
+  padding: 28px;
+}
+
+.auth-section .auth-copy h2 {
+  margin: 0;
+  font-family: 'Fraunces', serif;
+  font-size: clamp(1.9rem, 3vw, 2.5rem);
+  line-height: 1.05;
+}
+
+.auth-section .auth-form {
+  display: grid;
+  gap: 14px;
+}
+
+.auth-section .auth-toggle-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.auth-section .auth-submit {
+  justify-self: start;
+}

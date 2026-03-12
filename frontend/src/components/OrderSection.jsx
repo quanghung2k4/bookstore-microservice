@@ -3,7 +3,7 @@ import SectionHeader from './SectionHeader.jsx';
 
 export default function OrderSection({ customerName, orders, loadingOrders, formatPrice }) {
   return (
-    <section className="section-panel">
+    <section className="section-panel order-section">
       <SectionHeader
         eyebrow="Đơn hàng"
         title={`Lịch sử đơn của ${customerName || 'khách hàng hiện tại'}`}

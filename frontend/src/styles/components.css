@@ -1,97 +1,21 @@
-.section-eyebrow {
-  margin: 0 0 10px;
-  text-transform: uppercase;
-  letter-spacing: 0.2em;
-  font-size: 0.78rem;
-  font-weight: 700;
-  color: var(--muted);
-}
-
 .section-description,
-.muted-text,
-.book-card-author,
-.book-card-copy {
+.muted-text {
   color: var(--muted);
 }
 
 .stat-card,
 .mini-card,
-.book-card,
 .cart-item,
 .checkout-card,
-.review-form,
 .spotlight-card,
-.auth-shell,
 .nav-tab {
   background: var(--surface-soft);
   border: 1px solid rgba(84, 60, 33, 0.08);
   border-radius: var(--radius-lg);
 }
-
-.nav-tabs {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 12px;
-  padding: 16px;
-}
-
-.nav-tab {
-  display: inline-flex;
-  align-items: center;
-  gap: 12px;
-  padding: 14px 18px;
-  color: var(--muted);
-}
-
-.nav-tab strong {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  min-width: 28px;
-  height: 28px;
-  padding: 0 8px;
-  border-radius: 999px;
-  background: rgba(255, 255, 255, 0.8);
-  color: var(--primary-deep);
-  font-size: 0.86rem;
-}
-
-.nav-tab.active {
-  background: linear-gradient(135deg, rgba(191, 91, 44, 0.16), rgba(255, 241, 232, 0.92));
-  color: var(--ink);
-}
-
-.auth-shell {
-  display: grid;
-  gap: 20px;
-  padding: 28px;
-}
-
-.auth-form,
-.checkout-grid,
-.review-form {
-  display: grid;
-  gap: 14px;
-}
-
-.auth-toggle-row,
-.tab-row {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 10px;
-}
-
-.auth-submit {
-  justify-self: start;
-}
-
-.section-header,
-.toolbar-row,
 .book-card-head,
 .book-card-foot,
 .cart-item,
-.cart-item-side,
-.summary-line,
 .mini-card-head,
 .mini-card-meta,
 .modal-header {
@@ -108,77 +32,11 @@
   margin-bottom: 6px;
 }
 
-.section-header {
-  align-items: start;
-  margin-bottom: 18px;
-}
-
-.section-header h3 {
-  margin: 0;
-  font-size: clamp(1.7rem, 3vw, 2.35rem);
-  line-height: 1.02;
-}
-
-.section-description {
-  margin: 10px 0 0;
-  max-width: 56ch;
-  line-height: 1.65;
-}
-
 .section-badge,
 .chip,
 .filter-chip {
   border-radius: 999px;
   font-size: 0.84rem;
-}
-
-.section-badge {
-  white-space: nowrap;
-  padding: 10px 14px;
-  background: rgba(255, 255, 255, 0.72);
-  color: var(--muted);
-  border: 1px solid var(--line);
-}
-
-.section-badge-accent {
-  background: rgba(191, 91, 44, 0.12);
-  color: var(--primary-deep);
-}
-
-.toolbar-row {
-  align-items: start;
-  gap: 18px;
-  margin-bottom: 18px;
-}
-
-.search-form {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  width: min(100%, 460px);
-}
-
-.filter-chip {
-  border: 1px solid var(--line);
-  padding: 10px 14px;
-  background: rgba(255, 255, 255, 0.78);
-  color: var(--muted);
-}
-
-.filter-chip.active {
-  background: var(--primary-deep);
-  border-color: var(--primary-deep);
-  color: #fffaf5;
-}
-
-.search-input {
-  flex: 1;
-  min-width: 0;
-}
-
-.search-button {
-  white-space: nowrap;
-  box-shadow: none;
 }
 
 .chip {

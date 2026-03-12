@@ -15,7 +15,7 @@ export default function CartSection({
   formatPrice,
 }) {
   return (
-    <section className="section-panel sticky-panel">
+    <section className="section-panel cart-section sticky-panel">
       <SectionHeader
         eyebrow="Giỏ hàng"
         title={`Giỏ của ${customerName || 'khách hàng hiện tại'}`}

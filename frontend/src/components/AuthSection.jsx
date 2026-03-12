@@ -4,7 +4,7 @@ export default function AuthSection({ authMode, onModeChange, authForm, onFieldC
   const isLogin = authMode === 'login';
 
   return (
-    <section className="section-panel auth-shell">
+    <section className="section-panel auth-section auth-shell">
       <div className="auth-copy">
         <p className="section-eyebrow">Tài khoản khách hàng</p>
         <h2>{isLogin ? 'Đăng nhập để bắt đầu mua sắm' : 'Tạo tài khoản mới để sử dụng storefront'}</h2>

@@ -73,8 +73,14 @@ services:
         condition: service_started
     environment:
       VITE_API_PROXY_TARGET: http://api-gateway:8000
+      CHOKIDAR_USEPOLLING: "true"
+      CHOKIDAR_INTERVAL: "300"
+      WATCHPACK_POLLING: "true"
     ports:
       - "5173:5173"
+    volumes:
+      - ./frontend:/app
+      - frontend-node-modules:/app/node_modules
     networks:
       - bookstore-network
     restart: unless-stopped
@@ -356,12 +362,14 @@ services:
       DB_PASSWORD: bookstore
       BOOK_SERVICE_URL: http://book-service:8000
       COMMENT_RATE_SERVICE_URL: http://comment-rate-service:8000
+      ORDER_SERVICE_URL: http://order-service:8000
     networks:
       - bookstore-network
     restart: unless-stopped
 
 volumes:
   postgres-data:
+  frontend-node-modules:
 
 networks:
   bookstore-network:

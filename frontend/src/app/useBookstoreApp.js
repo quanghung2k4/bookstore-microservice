@@ -7,8 +7,14 @@ export function useBookstoreApp() {
   const [currentCustomer, setCurrentCustomer] = useState(null);
   const [cart, setCart] = useState(null);
   const [orders, setOrders] = useState([]);
+  const [allOrders, setAllOrders] = useState([]);
   const [reviews, setReviews] = useState([]);
   const [recommendations, setRecommendations] = useState([]);
+  const [recommendationMeta, setRecommendationMeta] = useState({
+    strategy: '',
+    isFallback: false,
+    reason: '',
+  });
   const [selectedBook, setSelectedBook] = useState(null);
   const [selectedBookReviews, setSelectedBookReviews] = useState([]);
   const [activeView, setActiveView] = useState('home');
@@ -90,6 +96,28 @@ export function useBookstoreApp() {
   useEffect(() => {
     let ignore = false;
 
+    async function loadAllOrders() {
+      try {
+        const data = await requestJson(API_ENDPOINTS.orders);
+        if (!ignore) {
+          setAllOrders(Array.isArray(data) ? data : []);
+        }
+      } catch {
+        if (!ignore) {
+          setAllOrders([]);
+        }
+      }
+    }
+
+    loadAllOrders();
+    return () => {
+      ignore = true;
+    };
+  }, []);
+
+  useEffect(() => {
+    let ignore = false;
+
     async function loadReviews() {
       try {
         setLoadingReviews(true);
@@ -162,10 +190,16 @@ export function useBookstoreApp() {
         const data = await requestJson(`${API_ENDPOINTS.recommendations}/${currentCustomerId}/`);
         if (!ignore) {
           setRecommendations(Array.isArray(data?.recommendations) ? data.recommendations : []);
+          setRecommendationMeta({
+            strategy: data?.strategy || '',
+            isFallback: Boolean(data?.is_fallback),
+            reason: data?.reason || '',
+          });
         }
       } catch (error) {
         if (!ignore) {
           setRecommendations([]);
+          setRecommendationMeta({ strategy: '', isFallback: false, reason: '' });
           setErrorMessage(`Khong the tai goi y: ${error.message}`);
         }
       } finally {
@@ -181,6 +215,7 @@ export function useBookstoreApp() {
       setCart(null);
       setOrders([]);
       setRecommendations([]);
+      setRecommendationMeta({ strategy: '', isFallback: false, reason: '' });
       setLoadingCart(false);
       setLoadingOrders(false);
       setLoadingRecommendations(false);
@@ -258,6 +293,15 @@ export function useBookstoreApp() {
     return books.filter((book) => purchasedBookIds.has(book.id));
   }, [books, purchasedBookIds]);
 
+  const soldCountsByBook = useMemo(() => {
+    return allOrders.reduce((summary, order) => {
+      (order.items || []).forEach((item) => {
+        summary[item.book_id] = (summary[item.book_id] || 0) + Number(item.quantity || 0);
+      });
+      return summary;
+    }, {});
+  }, [allOrders]);
+
   function persistCustomerSession(customer) {
     setCurrentCustomer(customer);
     window.localStorage.setItem(CUSTOMER_SESSION_KEY, JSON.stringify(customer));
@@ -307,9 +351,19 @@ export function useBookstoreApp() {
     }
   }
 
+  async function refreshAllOrders() {
+    try {
+      const data = await requestJson(API_ENDPOINTS.orders);
+      setAllOrders(Array.isArray(data) ? data : []);
+    } catch {
+      setAllOrders([]);
+    }
+  }
+
   async function refreshRecommendations(targetCustomerId = currentCustomer?.id) {
     if (!targetCustomerId) {
       setRecommendations([]);
+      setRecommendationMeta({ strategy: '', isFallback: false, reason: '' });
       return;
     }
 
@@ -317,8 +371,14 @@ export function useBookstoreApp() {
     try {
       const data = await requestJson(`${API_ENDPOINTS.recommendations}/${targetCustomerId}/`);
       setRecommendations(Array.isArray(data?.recommendations) ? data.recommendations : []);
+      setRecommendationMeta({
+        strategy: data?.strategy || '',
+        isFallback: Boolean(data?.is_fallback),
+        reason: data?.reason || '',
+      });
     } catch (error) {
       setRecommendations([]);
+      setRecommendationMeta({ strategy: '', isFallback: false, reason: '' });
       setErrorMessage(`Khong the lam moi goi y: ${error.message}`);
     } finally {
       setLoadingRecommendations(false);
@@ -442,18 +502,23 @@ export function useBookstoreApp() {
     setBannerMessage('Da dang xuat khoi phien mua hang.');
   }
 
-  async function handleAddToCart(book) {
+  async function handleAddToCart(book, quantity = 1, options = {}) {
+    const requestedQuantity = Math.max(1, Number(quantity) || 1);
     setErrorMessage('');
     setBusyAction(`book-${book.id}`);
 
     try {
+      if (Number(book.stock) <= 0) {
+        throw new Error('Sach nay dang tam het hang.');
+      }
+
       const cartId = await ensureCart();
       const existingItem = cartItems.find((item) => item.book_id === book.id);
 
       if (existingItem) {
         await requestJson(`${API_ENDPOINTS.cartItems}${existingItem.id}/`, {
           method: 'PATCH',
-          body: JSON.stringify({ quantity: existingItem.quantity + 1 }),
+          body: JSON.stringify({ quantity: existingItem.quantity + requestedQuantity }),
         });
       } else {
         await requestJson(API_ENDPOINTS.cartItems, {
@@ -461,18 +526,27 @@ export function useBookstoreApp() {
           body: JSON.stringify({
             cart_id: cartId,
             book_id: book.id,
-            quantity: 1,
+            quantity: requestedQuantity,
           }),
         });
       }
 
       await refreshCart();
-      setBannerMessage(`Da them "${book.title}" vao gio hang cua khach hang #${customerId}.`);
+      if (options.openCartAfterAdd) {
+        setActiveView('cart');
+        setBannerMessage(`Da dua ${requestedQuantity} cuon "${book.title}" vao gio hang. Kiem tra thong tin va xac nhan don de mua ngay.`);
+      } else {
+        setBannerMessage(`Da them ${requestedQuantity} cuon "${book.title}" vao gio hang cua khach hang #${customerId}.`);
+      }
     } catch (error) {
       setErrorMessage(`Khong the them sach vao gio: ${error.message}`);
     } finally {
       setBusyAction('');
     }
+  }
+
+  async function handleBuyNow(book, quantity = 1) {
+    await handleAddToCart(book, quantity, { openCartAfterAdd: true });
   }
 
   async function handleQuantityChange(item, nextQuantity) {
@@ -546,7 +620,7 @@ export function useBookstoreApp() {
         body: JSON.stringify(payload),
       });
 
-      await Promise.all([refreshCart(), refreshOrders(), refreshRecommendations()]);
+      await Promise.all([refreshCart(), refreshOrders(), refreshRecommendations(), refreshAllOrders()]);
 
       setBannerMessage(`Don hang #${data.order.id} da duoc tao. Thanh toan va van chuyen da duoc khoi tao.`);
     } catch (error) {
@@ -643,6 +717,7 @@ export function useBookstoreApp() {
     filteredBooks,
     formatPrice,
     handleAddToCart,
+    handleBuyNow,
     handleAuthFieldChange,
     handleAuthSubmit,
     handleCheckout,
@@ -664,6 +739,7 @@ export function useBookstoreApp() {
     orders,
     recentReviews,
     recommendations,
+    recommendationMeta,
     renderRating,
     reviews,
     reviewForm,
@@ -676,6 +752,7 @@ export function useBookstoreApp() {
     setAuthMode,
     setSearchInput,
     shelves,
+    soldCountsByBook,
     totals,
   };
 }

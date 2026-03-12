@@ -29,6 +29,7 @@ function StorefrontView(props) {
     handleSearchSubmit,
     handleSelectBook,
     handleSubmitReview,
+    handleBuyNow,
     loadingBooks,
     loadingCart,
     loadingOrders,
@@ -38,6 +39,7 @@ function StorefrontView(props) {
     orders,
     recentReviews,
     recommendations,
+    recommendationMeta,
     renderRating,
     reviews,
     reviewForm,
@@ -48,6 +50,7 @@ function StorefrontView(props) {
     setActiveShelf,
     setSearchInput,
     shelves,
+    soldCountsByBook,
     totals,
   } = props;
 
@@ -107,6 +110,13 @@ function StorefrontView(props) {
             onBack={handleCloseBookDetail}
             renderRating={renderRating}
             formatPrice={formatPrice}
+            busyAction={busyAction}
+            onAddToCart={handleAddToCart}
+            onBuyNow={handleBuyNow}
+            checkoutForm={checkoutForm}
+            onCheckoutFieldChange={handleCheckoutFieldChange}
+            currentCartQuantity={enrichedCartItems.find((item) => item.book_id === selectedBook.id)?.quantity || 0}
+            soldCount={soldCountsByBook[selectedBook.id] || 0}
           />
         </div>
       ) : null;
@@ -117,6 +127,7 @@ function StorefrontView(props) {
           <RecommendationSection
             customerName={currentCustomer?.name}
             recommendations={recommendations}
+            recommendationMeta={recommendationMeta}
             loadingRecommendations={loadingRecommendations}
             busyAction={busyAction}
             onAddToCart={handleAddToCart}
@@ -151,7 +162,7 @@ export default function StorefrontShell(props) {
 
   return (
     <>
-      <section className="section-panel welcome-strip">
+      <section className="section-panel storefront-welcome welcome-strip">
         <div>
           <p className="section-eyebrow">BookVerse Storefront</p>
           <h2>{`Xin chao ${currentCustomer.name}`}</h2>

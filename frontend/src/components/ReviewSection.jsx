@@ -15,7 +15,7 @@ export default function ReviewSection({
   const canSubmitReview = reviewableBooks.length > 0;
 
   return (
-    <section className="section-panel review-shell">
+    <section className="section-panel review-section review-shell">
       <SectionHeader
         eyebrow="Đánh giá từ người đọc"
         title="Nhận xét sau khi mua"

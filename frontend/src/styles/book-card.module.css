@@ -1,0 +1,176 @@
+.card {
+  display: flex;
+  gap: 16px;
+  background: #ffffff;
+  border-radius: 16px;
+  padding: 16px;
+  border: 1px solid #eee;
+  transition: all 0.25s ease;
+}
+
+.card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 10px 25px rgba(0,0,0,0.08);
+}
+
+.coverButton {
+  width: 80px;
+  height: 110px;
+  border-radius: 10px;
+  border: none;
+  background:
+    linear-gradient(160deg, rgba(255, 81, 0, 0.5), rgba(255, 229, 183, 0.95)),
+    radial-gradient(circle at top right, rgba(120, 255, 235, 0.8), transparent 70%);
+  color: white;
+  font-size: 28px;
+  font-weight: 700;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.coverButton:hover {
+  opacity: 0.9;
+}
+
+.content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+}
+
+.badge {
+  font-size: 12px;
+  padding: 4px 8px;
+  border-radius: 999px;
+  font-weight: 500;
+}
+
+.badgeShelf {
+  background: #eef2ff;
+  color: #4f46e5;
+}
+
+.badgeAvailable {
+  background: #dcfce7;
+  color: #15803d;
+}
+
+.badgeLimited {
+  background: #fee2e2;
+  color: #b91c1c;
+}
+
+.titleButton {
+  background: none;
+  border: none;
+  padding: 0;
+  text-align: left;
+  cursor: pointer;
+}
+
+.title {
+  margin: 0;
+  font-family: 'Fraunces', serif;
+  font-size: 18px;
+  font-weight: 600;
+  color: #111827;
+}
+
+.titleButton:hover .title {
+  color: #4f46e5;
+}
+
+.author {
+  font-size: 14px;
+  color: #6b7280;
+  margin: 0;
+}
+
+.copy {
+  font-size: 13px;
+  color: #4b5563;
+  line-height: 1.5;
+}
+
+.metaGrid {
+  display: grid;
+  grid-template-columns: repeat(2,1fr);
+  gap: 12px;
+}
+
+.metaBox {
+  background: #f9fafb;
+  padding: 10px;
+  border-radius: 8px;
+}
+
+.metaLabel {
+  display: block;
+  font-size: 11px;
+  color: #9ca3af;
+}
+
+.footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 6px;
+}
+
+.priceBlock {
+  display: flex;
+  flex-direction: column;
+}
+
+.priceValue {
+  font-size: 18px;
+  font-weight: 700;
+  color: #dc2626;
+}
+
+.actions {
+  display: flex;
+  margin-left: 8px;
+  gap: 8px;
+}
+
+.detailButton {
+  background: #f3f4f6;
+  border: none;
+  padding: 8px 12px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 13px;
+}
+
+.detailButton:hover {
+  background: #e5e7eb;
+}
+
+.cartButton {
+  background: linear-gradient(160deg, rgba(255, 81, 0, 0.8), rgba(255, 229, 183, 0.8));
+  color: white;
+  border: none;
+  padding: 8px 14px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 13px;
+  transition: 0.2s;
+}
+
+.cartButton:hover {
+  background: linear-gradient(160deg, rgba(255, 81, 0, 1), rgba(255, 229, 183, 1));
+}
+
+.cartButton:disabled {
+  background: #9ca3af;
+  cursor: not-allowed;
+}

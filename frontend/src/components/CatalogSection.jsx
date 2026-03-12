@@ -19,11 +19,9 @@ export default function CatalogSection({
   formatPrice,
 }) {
   return (
-    <section className="section-panel">
+    <section className="section-panel catalog-section">
       <SectionHeader
-        eyebrow="Danh mục sách"
-        title="Khám phá kệ sách"
-        description="Lọc theo nhóm hiển thị và tìm kiếm theo tên sách hoặc tác giả."
+        eyebrow="Khám phá kệ sách"
         badge={`${filteredBooks.length} kết quả`}
       />
 

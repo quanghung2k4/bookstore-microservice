@@ -2,4 +2,13 @@
 @import './styles/layout.css';
 @import './styles/components.css';
 @import './styles/views.css';
-@import './styles/responsive.css';
+@import './styles/section-header.css';
+@import './styles/auth-section.css';
+@import './styles/navigation-tabs.css';
+@import './styles/storefront-shell.css';
+@import './styles/catalog-section.css';
+@import './styles/recommendation-section.css';
+@import './styles/cart-section.css';
+@import './styles/order-section.css';
+@import './styles/review-section.css';
+@import './styles/book-detail-page.css';

@@ -70,6 +70,20 @@ docker-compose down
 
 ## Useful Commands
 
+Refresh the frontend container after changing Docker config for hot reload:
+
+```bash
+docker-compose up -d --build frontend
+```
+
+For real-time frontend updates in Docker:
+
+```bash
+docker-compose up -d frontend
+```
+
+After that, edits under `frontend/src/` are bind-mounted into the container and Vite will auto-reload in the browser.
+
 View logs for all services:
 
 ```bash

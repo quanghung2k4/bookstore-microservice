@@ -1,0 +1,18 @@
+.review-shell {
+  position: relative;
+  z-index: 1;
+  max-width: 1420px;
+  margin: 0 auto;
+}
+
+.review-layout {
+  display: grid;
+  grid-template-columns: minmax(280px, 0.92fr) minmax(0, 1.08fr);
+  gap: 24px;
+}
+
+.review-form {
+  display: grid;
+  gap: 14px;
+  padding: 18px;
+}
